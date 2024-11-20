@@ -16,7 +16,9 @@
 
         <!-- Country -->
         <label for="country" class="block mt-5 mb-2 font-medium text-gray-900 dark:text-white">País</label>
-        <select formControlName="country" id="country"
+        <select
+            formControlName="country"
+            id="country"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-indigo-950 dark:border-indigo-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-indigo-400">
             <option selected value="">-- Seleccione un país --</option>
             <option *ngFor="let country of countriesByRegion" [value]="country.cca3">
