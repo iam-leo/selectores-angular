@@ -11,7 +11,7 @@ import { filter, switchMap, tap } from 'rxjs';
 })
 export class SelectorPageComponent implements OnInit {
   public countriesByRegion: SmallCountry[] = [];
-  public bordersCountries: string[] = [];
+  public bordersCountries: SmallCountry[] = [];
 
   public myForm: FormGroup = this.fb.group({
     region: ['', Validators.required],
@@ -57,21 +57,20 @@ export class SelectorPageComponent implements OnInit {
     this.myForm.get('country')!.valueChanges
     .pipe(
       tap( () => {
-        console.log(this.myForm.get('country'))
         this.myForm.get('border')!.reset({ value: '', disabled: true });
         this.bordersCountries = [];
       }),
       filter( (value: string) => value.length > 0 ),
-      switchMap( ( alphacode ) => this.countriesService.getCountriesByAlphaCode( alphacode ) )
+      switchMap( ( alphacode ) => this.countriesService.getCountriesByAlphaCode( alphacode ) ),
+      switchMap( country => this.countriesService.getCountryBordersByCodes( country.borders ))
     )
-    .subscribe(country => {
-      console.log(country)
-      this.bordersCountries = country.borders;
+    .subscribe(countries => {
+      this.bordersCountries = countries;
 
-      //if (country.borders.length > 0) {
+      if (countries.length > 0) {
         // Habilitar el select de `border` si hay países
         this.myForm.get('border')!.enable();
-      //}
+      }
     })
   }
 }
